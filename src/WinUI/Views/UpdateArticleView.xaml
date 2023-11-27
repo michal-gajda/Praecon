@@ -1,0 +1,52 @@
+﻿<Window
+    x:Class="Praecon.WinUI.Views.UpdateArticleView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="clr-namespace:Praecon.WinUI.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:Praecon.WinUI.UserControls"
+    xmlns:vm="clr-namespace:Praecon.WinUI.ViewModels"
+    Title="{Binding Path=WindowTitle, Mode=OneWay}"
+    Width="450"
+    Height="450"
+    d:DataContext="{d:DesignInstance vm:UpdateArticleViewModel,
+                                     IsDesignTimeCreatable=True}"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Window.Style>
+        <Style>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsClose}" Value="true">
+                    <Setter Property="b:WindowBehavior.Close" Value="true" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <uc:ArticleUserControl
+            Grid.Row="0"
+            Margin="5"
+            DataContext="{Binding Item, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <StackPanel
+            Grid.Row="1"
+            Margin="7,0,7,7"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button
+                Width="120"
+                Command="{Binding Path=OkCommand}"
+                Content="OK" />
+            <Button
+                Width="120"
+                Margin="5,0,0,0"
+                Command="{Binding Path=CancelCommand}"
+                Content="Cancel" />
+        </StackPanel>
+    </Grid>
+</Window>
