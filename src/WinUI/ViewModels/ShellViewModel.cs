@@ -49,16 +49,19 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
     {
         var dateTimeOffset = this.timeProvider.GetUtcNow();
 
-        var viewModel = new UpdateArticleViewModel(this.loggerFactory, mediator)
+        var item = new Article
         {
-            Item = new Article
-            {
-                Id = Guid.NewGuid(),
-                Date = dateTimeOffset.DateTime,
-            }
+            Id = Guid.NewGuid(),
+            Date = dateTimeOffset.DateTime,
         };
 
-        var result = this.dialogService.ShowDialog<UpdateArticleView>(this, viewModel);
+        var updateViewLogger = this.loggerFactory.CreateLogger<UpdateArticleViewModel>();
+        var viewModel = new UpdateArticleViewModel(updateViewLogger, this.mediator)
+        {
+            Item = item,
+        };
+
+        var result = this.dialogService.ShowDialog(this, viewModel);
 
         if (result is true)
         {
@@ -76,12 +79,13 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
             throw new NullReferenceException(nameof(parameter));
         }
 
-        var viewModel = new UpdateArticleViewModel(this.loggerFactory, mediator)
+        var updateViewLogger = this.loggerFactory.CreateLogger<UpdateArticleViewModel>();
+        var viewModel = new UpdateArticleViewModel(updateViewLogger, this.mediator)
         {
             Item = parameter with { },
         };
 
-        var result = this.dialogService.ShowDialog<UpdateArticleView>(this, viewModel);
+        var result = this.dialogService.ShowDialog(this, viewModel);
 
         if (result is true)
         {

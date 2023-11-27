@@ -9,4 +9,5 @@ internal sealed record CreateArticle : IRequest
     public Guid? ThumbnailId { get; set; } = default;
     public Guid? MediaId { get; set; } = default;
     public required string Tags { get; init; }
+    public bool Published { get; init; } = default;
 }

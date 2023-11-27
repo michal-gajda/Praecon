@@ -14,9 +14,9 @@ public partial class UpdateArticleViewModel : ObservableObject, IModalDialogView
     [ObservableProperty] private Article item = new();
     [ObservableProperty] private bool isClose = default;
 
-    public UpdateArticleViewModel(ILoggerFactory loggerFactory, ISender mediator)
+    public UpdateArticleViewModel(ILogger<UpdateArticleViewModel> logger, ISender mediator)
     {
-        (this.logger, this.mediator) = (loggerFactory.CreateLogger<UpdateArticleViewModel>(), mediator);
+        (this.logger, this.mediator) = (logger, mediator);
 
         this.CancelCommand = new AsyncRelayCommand(this.CancelAsync);
         this.OkCommand = new AsyncRelayCommand(this.OkAsync);

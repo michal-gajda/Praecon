@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MvvmDialogs;
+using MvvmDialogs.DialogTypeLocators;
 using Praecon.WinUI.Models.Interfaces;
 using Praecon.WinUI.Models.Profiles;
 using Praecon.WinUI.Models.Services;
@@ -51,6 +52,7 @@ public partial class App : Application
         services.AddSingleton<UpdateArticleViewModel>();
         services.AddSingleton<IArticleRepository, ArticleRepository>();
         services.AddSingleton(TimeProvider.System);
+        services.AddSingleton<IDialogTypeLocator, DialogTypeLocator>();
 
         IServiceProvider provider = services.BuildServiceProvider();
 

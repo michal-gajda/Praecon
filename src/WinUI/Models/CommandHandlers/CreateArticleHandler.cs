@@ -14,7 +14,7 @@ internal sealed class CreateArticleHandler : IRequestHandler<CreateArticle>
 
     public async Task Handle(CreateArticle request, CancellationToken cancellationToken)
     {
-        var entity = new ArticleEntity(request.Id, request.Title, request.Date, request.Payload, false, request.ThumbnailId, request.MediaId, request.Tags);
+        var entity = new ArticleEntity(request.Id, request.Title, request.Date, request.Payload, request.Published, request.ThumbnailId, request.MediaId, request.Tags);
 
         await this.repository.CreateAsync(entity, cancellationToken);
     }

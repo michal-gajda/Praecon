@@ -34,13 +34,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="_File">
-                <MenuItem Command="{Binding Path=ExitCommand}" Header="_Exit" />
+            <MenuItem Header="{DynamicResource ResourceKey=MenuFileLabel}">
+                <MenuItem Command="{Binding Path=ExitCommand}" Header="{DynamicResource ResourceKey=MenuExitLabel}" />
             </MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1">
             <ToolBar>
-                <Button Command="{Binding CreateArticleCommand}" Content="Create" />
+                <Button Command="{Binding Path=CreateArticleCommand}" Content="Create" />
                 <Button
                     Command="{Binding Path=UpdateArticleCommand}"
                     CommandParameter="{Binding Path=SelectedItem, Mode=TwoWay}"
@@ -63,7 +63,7 @@
             SelectionUnit="FullRow">
             <DataGrid.InputBindings>
                 <MouseBinding
-                    Command="{Binding Path=UpdateArticleCommand}"
+                    Command="{Binding Path=UpdateArticleCommand, Mode=OneWay}"
                     CommandParameter="{Binding Path=SelectedItem}"
                     MouseAction="LeftDoubleClick" />
             </DataGrid.InputBindings>
@@ -72,6 +72,7 @@
                     Width="Auto"
                     Binding="{Binding Path=Id}"
                     Header="Id"
+                    Visibility="Collapsed"
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="*"
@@ -80,7 +81,7 @@
                     IsReadOnly="True" />
                 <DataGridTextColumn
                     Width="Auto"
-                    Binding="{Binding Path=Date}"
+                    Binding="{Binding Path=Date, StringFormat=\{0:yyyy-MM-dd\}}"
                     Header="Date"
                     IsReadOnly="True" />
                 <DataGridCheckBoxColumn

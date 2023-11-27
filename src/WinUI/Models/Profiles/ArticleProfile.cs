@@ -26,6 +26,7 @@ internal sealed class ArticleProfile : Profile
             .ForMember(target => target.Title, options => options.MapFrom(source => source.Title))
             .ForMember(target => target.Date, options => options.MapFrom(source => DateOnly.FromDateTime(source.Date)))
             .ForMember(target => target.Payload, options => options.MapFrom(source => source.Payload))
+            .ForMember(target => target.Published, options => options.MapFrom(source => source.Published))
             .ForMember(target => target.ThumbnailId, options => options.MapFrom(source => source.ThumbnailId))
             .ForMember(target => target.MediaId, options => options.MapFrom(source => source.MediaId))
             .ForMember(target => target.Tags, options => options.MapFrom(source => source.Tags))
@@ -43,7 +44,7 @@ internal sealed class ArticleProfile : Profile
             ;
 
         this.CreateMap<IEnumerable<Entity>, IEnumerable<ViewModel>>()
-            .ConvertUsing((source, target, context) =>
+            .ConvertUsing((source, _, context) =>
                 source.Select(item => context.Mapper.Map<ViewModel>(item)))
             ;
     }
