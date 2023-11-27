@@ -38,14 +38,7 @@ public partial class UpdateArticleView : Window
             SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
             SendMessage(handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
 
-            SetWindowPos(
-                handle,
-                IntPtr.Zero,
-                x: 0,
-                y: 0,
-                cx: 0,
-                cy: 0,
-                SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+            SetWindowPos(handle, IntPtr.Zero, x: 0, y: 0, cx: 0, cy: 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
         };
 
         this.DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();
@@ -61,12 +54,5 @@ public partial class UpdateArticleView : Window
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern bool SetWindowPos(
-        IntPtr hWnd,
-        IntPtr hWndInsertAfter,
-        int x,
-        int y,
-        int cx,
-        int cy,
-        uint uFlags);
+    private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 }

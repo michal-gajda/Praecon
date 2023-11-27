@@ -40,12 +40,12 @@
             Orientation="Horizontal">
             <Button
                 Width="120"
-                Command="{Binding Path=OkCommand}"
+                Command="{Binding Path=OkCommand, Mode=OneWay}"
                 Content="OK" />
             <Button
                 Width="120"
                 Margin="5,0,0,0"
-                Command="{Binding Path=CancelCommand}"
+                Command="{Binding Path=CancelCommand, Mode=OneWay}"
                 Content="Cancel" />
         </StackPanel>
     </Grid>

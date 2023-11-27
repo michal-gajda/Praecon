@@ -41,11 +41,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Entities\" />
-    <Folder Include="Models\QueryHandlers\" />
-    <Folder Include="Models\ViewModels\" />
-    <Folder Include="Models\Services\" />
-  </ItemGroup>
-
 </Project>
