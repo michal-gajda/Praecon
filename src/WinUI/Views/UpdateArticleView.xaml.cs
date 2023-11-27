@@ -28,17 +28,20 @@ public partial class UpdateArticleView : Window
 
         this.SourceInitialized += (sender, e) =>
         {
-            var handle = new WindowInteropHelper((Window)sender).Handle;
-            var value = GetWindowLong(handle, GWL_STYLE);
-            SetWindowLong(handle, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+            if (sender is Window window)
+            {
+                var handle = new WindowInteropHelper(window).Handle;
+                var value = GetWindowLong(handle, GWL_STYLE);
+                SetWindowLong(handle, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
 
-            var exStyle = GetWindowLong(handle, GWL_EXSTYLE);
-            SetWindowLong(handle, GWL_EXSTYLE, exStyle | WS_EX_DLGMODALFRAME);
+                var exStyle = GetWindowLong(handle, GWL_EXSTYLE);
+                SetWindowLong(handle, GWL_EXSTYLE, exStyle | WS_EX_DLGMODALFRAME);
 
-            SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
-            SendMessage(handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
+                SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
+                SendMessage(handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
 
-            SetWindowPos(handle, IntPtr.Zero, x: 0, y: 0, cx: 0, cy: 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+                SetWindowPos(handle, IntPtr.Zero, x: 0, y: 0, cx: 0, cy: 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+            }
         };
 
         this.DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();

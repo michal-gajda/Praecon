@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Michal Gajda</Authors>
+    <Company>Gajda Ltd</Company>
+    <Product>Praecon</Product>
+    <TargetFramework>net8.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>
