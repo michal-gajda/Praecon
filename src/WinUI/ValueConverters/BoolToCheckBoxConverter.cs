@@ -6,16 +6,12 @@ using System.Windows.Data;
 public sealed class BoolToCheckBoxConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (value is bool boolValue)
-        {
-            return boolValue;
-        }
-
-        return Binding.DoNothing;
-    }
+        => this.Default(value);
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => this.Default(value);
+
+    private object Default(object? value)
     {
         if (value is bool boolValue)
         {
