@@ -101,8 +101,10 @@
             Grid.Row="6"
             Grid.Column="1"
             Margin="2"
+            DisplayMemberPath="Code"
             ItemsSource="{Binding Path=Thumbnails, Mode=OneWay}"
-            SelectedValue="{Binding Path=ThumbnailId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            SelectedValue="{Binding Path=ThumbnailId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValuePath="Id" />
         <Label
             Grid.Row="7"
             Grid.Column="0"

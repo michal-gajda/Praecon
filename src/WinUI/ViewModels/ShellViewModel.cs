@@ -20,7 +20,7 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
     private readonly ILoggerFactory loggerFactory;
     private readonly IMapper mapper;
     private readonly ISender mediator;
-    private readonly IReadOnlyList<Guid> thumbnails;
+    private readonly IReadOnlyList<ThumbnailItem> thumbnails;
     private readonly TimeProvider timeProvider;
 
     [ObservableProperty] private ObservableCollection<Article> items = new();
@@ -40,10 +40,20 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
     {
         (this.dialogService, logger, this.loggerFactory, this.mapper, this.mediator, this.timeProvider) = (dialogService, loggerFactory.CreateLogger<ShellViewModel>(), loggerFactory, mapper, mediator, timeProvider);
 
-        thumbnails = new List<Guid>
+        thumbnails = new List<ThumbnailItem>
         {
-            Guid.Empty,
-            Guid.NewGuid(),
+            new()
+            {
+                Id = Guid.Empty,
+                Code = "None",
+                Name = "Nic",
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                Code = "Random",
+                Name = "Logowy",
+            },
         };
 
         CreateArticleCommand = new AsyncRelayCommand(CreateArticleAsync);
