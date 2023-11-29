@@ -18,7 +18,7 @@
     <Window.Style>
         <Style>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=IsClose}" Value="true">
+                <DataTrigger Binding="{Binding Path=IsClosed}" Value="true">
                     <Setter Property="b:WindowBehavior.Close" Value="true" />
                 </DataTrigger>
             </Style.Triggers>

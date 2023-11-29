@@ -1,6 +1,7 @@
 ﻿namespace Praecon.WinUI.Models.Profiles;
 
 using AutoMapper;
+
 using CreateCommand = Praecon.WinUI.Models.Commands.CreateArticle;
 using Entity = Praecon.WinUI.Models.Entities.ArticleEntity;
 using UpdateCommand = Praecon.WinUI.Models.Commands.UpdateArticle;

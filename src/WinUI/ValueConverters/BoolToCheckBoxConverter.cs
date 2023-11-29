@@ -11,13 +11,7 @@ public sealed class BoolToCheckBoxConverter : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => this.Default(value);
 
-    private object Default(object? value)
-    {
-        if (value is bool boolValue)
-        {
-            return boolValue;
-        }
-
-        return Binding.DoNothing;
-    }
+    private object Default(object? value) => value is bool boolValue
+        ? boolValue
+        : Binding.DoNothing;
 }

@@ -1,3 +1,5 @@
+namespace Praecon.WinUI.ViewModels;
+
 using System.Collections.ObjectModel;
 
 using AutoMapper;
@@ -10,8 +12,6 @@ using MvvmDialogs;
 using Praecon.WinUI.Models.Commands;
 using Praecon.WinUI.Models.Queries;
 using Praecon.WinUI.Models.ViewModels;
-
-namespace Praecon.WinUI.ViewModels;
 
 public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 {
@@ -38,9 +38,9 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
     public ShellViewModel(IDialogService dialogService, ILoggerFactory loggerFactory, IMapper mapper, ISender mediator, TimeProvider timeProvider)
     {
-        (this.dialogService, logger, this.loggerFactory, this.mapper, this.mediator, this.timeProvider) = (dialogService, loggerFactory.CreateLogger<ShellViewModel>(), loggerFactory, mapper, mediator, timeProvider);
+        (this.dialogService, this.logger, this.loggerFactory, this.mapper, this.mediator, this.timeProvider) = (dialogService, loggerFactory.CreateLogger<ShellViewModel>(), loggerFactory, mapper, mediator, timeProvider);
 
-        thumbnails = new List<ThumbnailItem>
+        this.thumbnails = new List<ThumbnailItem>
         {
             new()
             {
@@ -56,43 +56,43 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
             },
         };
 
-        CreateArticleCommand = new AsyncRelayCommand(CreateArticleAsync);
-        UpdateArticleCommand = new AsyncRelayCommand<Article?>(UpdateArticleAsync, CanUpdateArticle);
+        this.CreateArticleCommand = new AsyncRelayCommand(this.CreateArticleAsync);
+        this.UpdateArticleCommand = new AsyncRelayCommand<Article?>(this.UpdateArticleAsync, this.CanUpdateArticle);
 
-        LoadArticlesCommand = new AsyncRelayCommand(LoadArticlesAsync);
-        RefreshArticlesCommand = new AsyncRelayCommand(RefreshArticlesAsync);
+        this.LoadArticlesCommand = new AsyncRelayCommand(this.LoadArticlesAsync);
+        this.RefreshArticlesCommand = new AsyncRelayCommand(this.RefreshArticlesAsync);
 
-        ExitCommand = new AsyncRelayCommand(ExitAsync);
+        this.ExitCommand = new AsyncRelayCommand(this.ExitAsync);
     }
 
     private bool CanUpdateArticle(Article? parameter) => parameter is not null;
 
     private async Task CreateArticleAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Call: {MethodName}", nameof(CreateArticleCommand));
+        this.logger.LogInformation("Call: {MethodName}", nameof(this.CreateArticleCommand));
 
-        DateTimeOffset dateTimeOffset = timeProvider.GetUtcNow();
+        DateTimeOffset dateTimeOffset = this.timeProvider.GetUtcNow();
 
         Article? item = new()
         {
             Id = Guid.NewGuid(),
             Date = dateTimeOffset.DateTime,
-            Thumbnails = thumbnails,
+            Thumbnails = this.thumbnails,
         };
 
-        ILogger<UpdateArticleViewModel>? updateViewLogger = loggerFactory.CreateLogger<UpdateArticleViewModel>();
+        ILogger<UpdateArticleViewModel>? updateViewLogger = this.loggerFactory.CreateLogger<UpdateArticleViewModel>();
 
-        UpdateArticleViewModel? viewModel = new(updateViewLogger, mediator)
+        UpdateArticleViewModel? viewModel = new(updateViewLogger, this.mediator)
         {
             Item = item,
         };
 
-        bool? result = dialogService.ShowDialog(this, viewModel);
+        bool? result = this.dialogService.ShowDialog(this, viewModel);
 
         if (result is true)
         {
-            CreateArticle? command = mapper.Map<CreateArticle>(viewModel.Item);
-            await mediator.Send(command, cancellationToken);
+            CreateArticle? command = this.mapper.Map<CreateArticle>(viewModel.Item);
+            await this.mediator.Send(command, cancellationToken);
         }
 
         await Task.CompletedTask;
@@ -100,7 +100,7 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
     private async Task ExitAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Call: {MethodName}", nameof(ExitAsync));
+        this.logger.LogInformation("Call: {MethodName}", nameof(this.ExitAsync));
 
         System.Windows.Application.Current.Shutdown();
         await Task.CompletedTask;
@@ -108,14 +108,14 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
     private async Task LoadArticlesAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Call: {MethodName}", nameof(LoadArticlesCommand));
+        this.logger.LogInformation("Call: {MethodName}", nameof(this.LoadArticlesCommand));
 
         ListArticles? query = new();
-        IEnumerable<Article>? list = await mediator.Send(query, cancellationToken);
+        IEnumerable<Article>? list = await this.mediator.Send(query, cancellationToken);
 
         foreach (Article? listItem in list)
         {
-            Items.Add(listItem);
+            this.Items.Add(listItem);
         }
 
         await Task.CompletedTask;
@@ -123,27 +123,27 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
     private async Task RefreshArticlesAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Call: {MethodName}", nameof(RefreshArticlesAsync));
+        this.logger.LogInformation("Call: {MethodName}", nameof(this.RefreshArticlesAsync));
 
         ListArticles? query = new();
-        IEnumerable<Article>? list = await mediator.Send(query, cancellationToken);
+        IEnumerable<Article>? list = await this.mediator.Send(query, cancellationToken);
 
         foreach (Article? listItem in list)
         {
-            if (Items.Contains(listItem))
+            if (this.Items.Contains(listItem))
             {
                 continue;
             }
 
             Guid id = listItem.Id;
-            Article? item = Items.FirstOrDefault(article => article.Id == id);
+            Article? item = this.Items.FirstOrDefault(article => article.Id == id);
 
             if (item is not null)
             {
-                Items.Remove(item);
+                this.Items.Remove(item);
             }
 
-            Items.Add(listItem);
+            this.Items.Add(listItem);
         }
 
         await Task.CompletedTask;
@@ -151,25 +151,25 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
     private async Task UpdateArticleAsync(Article? parameter, CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Call: {MethodName}", nameof(UpdateArticleAsync));
+        this.logger.LogInformation("Call: {MethodName}", nameof(this.UpdateArticleAsync));
 
         ArgumentNullException.ThrowIfNull(parameter);
 
-        ILogger<UpdateArticleViewModel>? updateViewLogger = loggerFactory.CreateLogger<UpdateArticleViewModel>();
+        ILogger<UpdateArticleViewModel>? updateViewLogger = this.loggerFactory.CreateLogger<UpdateArticleViewModel>();
 
-        Article item = parameter with { Thumbnails = thumbnails };
+        Article item = parameter with { Thumbnails = this.thumbnails };
 
-        UpdateArticleViewModel? viewModel = new(updateViewLogger, mediator)
+        UpdateArticleViewModel? viewModel = new(updateViewLogger, this.mediator)
         {
             Item = item,
         };
 
-        bool? result = dialogService.ShowDialog(this, viewModel);
+        bool? result = this.dialogService.ShowDialog(this, viewModel);
 
         if (result is true)
         {
-            UpdateArticle? command = mapper.Map<UpdateArticle>(viewModel.Item);
-            await mediator.Send(command, cancellationToken);
+            UpdateArticle? command = this.mapper.Map<UpdateArticle>(viewModel.Item);
+            await this.mediator.Send(command, cancellationToken);
         }
 
         await Task.CompletedTask;

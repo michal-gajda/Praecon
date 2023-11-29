@@ -1,6 +1,7 @@
 ﻿namespace Praecon.WinUI.Models.Profiles;
 
 using System.Data;
+
 using Dapper;
 
 internal sealed class DateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly>
@@ -12,7 +13,7 @@ internal sealed class DateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly>
             throw new ArgumentNullException(nameof(value));
         }
 
-        var dateTime = (DateTime)value;
+        DateTime dateTime = (DateTime)value;
 
         return new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
     }

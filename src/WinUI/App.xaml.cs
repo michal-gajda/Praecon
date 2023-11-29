@@ -1,13 +1,18 @@
 ﻿namespace Praecon.WinUI;
 
+using System.Reflection;
 using System.Windows;
+
 using CommunityToolkit.Mvvm.DependencyInjection;
+
 using Dapper;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+
 using MvvmDialogs;
 using MvvmDialogs.DialogTypeLocators;
+
 using Praecon.WinUI.Models.Interfaces;
 using Praecon.WinUI.Models.Profiles;
 using Praecon.WinUI.Models.Services;
@@ -30,8 +35,9 @@ public partial class App : Application
 
         services.AddLogging(cfg => cfg.AddSeq(configuration.GetSection("Seq")));
 
-        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        Assembly? assembly = System.Reflection.Assembly.GetExecutingAssembly();
         services.AddAutoMapper(assembly);
+
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(assembly);
@@ -40,7 +46,7 @@ public partial class App : Application
         SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
         SqlMapper.AddTypeHandler(new NullableDateOnlyTypeHandler());
 
-        var options = new SqlServerOptions
+        SqlServerOptions? options = new SqlServerOptions
         {
             ConnectionString = configuration.GetConnectionString("DefaultConnectionString")!,
         };

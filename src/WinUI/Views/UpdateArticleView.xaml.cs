@@ -3,7 +3,9 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+
 using CommunityToolkit.Mvvm.DependencyInjection;
+
 using Praecon.WinUI.ViewModels;
 
 public partial class UpdateArticleView : Window
@@ -20,21 +22,21 @@ public partial class UpdateArticleView : Window
     private const int WS_MAXIMIZEBOX = 0x10000;
     private const int WS_MINIMIZEBOX = 0x20000;
 
-    public UpdateArticleViewModel ViewModel => (UpdateArticleViewModel)this.DataContext;
+    public UpdateArticleViewModel ViewModel => (UpdateArticleViewModel)DataContext;
 
     public UpdateArticleView()
     {
         this.InitializeComponent();
 
-        this.SourceInitialized += (sender, e) =>
+        SourceInitialized += (sender, e) =>
         {
             if (sender is Window window)
             {
-                var handle = new WindowInteropHelper(window).Handle;
-                var value = GetWindowLong(handle, GWL_STYLE);
+                IntPtr handle = new WindowInteropHelper(window).Handle;
+                int value = GetWindowLong(handle, GWL_STYLE);
                 SetWindowLong(handle, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
 
-                var exStyle = GetWindowLong(handle, GWL_EXSTYLE);
+                int exStyle = GetWindowLong(handle, GWL_EXSTYLE);
                 SetWindowLong(handle, GWL_EXSTYLE, exStyle | WS_EX_DLGMODALFRAME);
 
                 SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
@@ -44,7 +46,7 @@ public partial class UpdateArticleView : Window
             }
         };
 
-        this.DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();
+        DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();
     }
 
     [DllImport("user32.dll", SetLastError = true)]

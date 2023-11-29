@@ -35,7 +35,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="{DynamicResource ResourceKey=MenuFileLabel}">
-                <MenuItem Command="{Binding Path=ExitCommand}" Header="{DynamicResource ResourceKey=MenuExitLabel}" />
+                <MenuItem Command="{Binding Path=ExitCommand}" Header="{DynamicResource ResourceKey=MenuFileExitLabel}" />
             </MenuItem>
         </Menu>
         <ToolBarTray Grid.Row="1">
@@ -58,7 +58,7 @@
             CanUserSortColumns="True"
             HeadersVisibility="Column"
             ItemsSource="{Binding Path=Items}"
-            SelectedItem="{Binding Path=SelectedItem}"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single"
             SelectionUnit="FullRow">
             <DataGrid.InputBindings>
@@ -72,8 +72,8 @@
                     Width="Auto"
                     Binding="{Binding Path=Id}"
                     Header="Id"
-                    Visibility="Collapsed"
-                    IsReadOnly="True" />
+                    IsReadOnly="True"
+                    Visibility="Collapsed" />
                 <DataGridTextColumn
                     Width="*"
                     Binding="{Binding Path=Title}"

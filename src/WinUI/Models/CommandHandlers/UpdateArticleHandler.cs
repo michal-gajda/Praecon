@@ -14,7 +14,7 @@ internal sealed class UpdateArticleHandler : IRequestHandler<UpdateArticle>
 
     public async Task Handle(UpdateArticle request, CancellationToken cancellationToken)
     {
-        var entity = new ArticleEntity(request.Id, request.Title, request.Date, request.Payload, request.Published, request.ThumbnailId, request.MediaId, request.Tags);
+        ArticleEntity entity = new(request.Id, request.Title, request.Date, request.Payload, request.Published, request.ThumbnailId, request.MediaId, request.Tags);
 
         await this.repository.UpdateAsync(entity, cancellationToken);
     }

@@ -1,23 +1,24 @@
 ﻿namespace Praecon.WinUI.Models.Profiles;
 
 using System.Data;
+
 using Dapper;
 
-internal sealed class NullableDateOnlyTypeHandler : SqlMapper.TypeHandler<Nullable<DateOnly>>
+internal sealed class NullableDateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly?>
 {
-    public override Nullable<DateOnly> Parse(object value)
+    public override DateOnly? Parse(object value)
     {
         if (value is DBNull)
         {
             return default;
         }
 
-        var dateTime = (DateTime)value;
+        DateTime dateTime = (DateTime)value;
 
         return new DateOnly(dateTime.Year, dateTime.Month, dateTime.Day);
     }
 
-    public override void SetValue(IDbDataParameter parameter, Nullable<DateOnly> value)
+    public override void SetValue(IDbDataParameter parameter, DateOnly? value)
     {
         parameter.DbType = DbType.DateTime;
 
