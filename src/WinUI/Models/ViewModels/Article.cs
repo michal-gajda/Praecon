@@ -9,5 +9,6 @@ public sealed record Article
     public bool Published { get; set; } = false;
     public string Tags { get; set; } = string.Empty;
     public Guid? ThumbnailId { get; set; } = default;
+    public IReadOnlyList<Guid> Thumbnails { get; set; } = new List<Guid>();
     public string Title { get; set; } = string.Empty;
 }
