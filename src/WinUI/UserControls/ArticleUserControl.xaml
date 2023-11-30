@@ -13,6 +13,14 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <vc:BoolToCheckBoxConverter x:Key="BoolToCheckBoxConverter" />
+        <DataTemplate x:Key="PreviewTemplate">
+            <Image
+                Width="128"
+                Height="128"
+                MaxWidth="128"
+                MaxHeight="128"
+                Source="{Binding Path=Preview}" />
+        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,28 +41,33 @@
             Grid.Row="0"
             Grid.Column="0"
             Margin="2"
-            Content="Id" />
+            HorizontalAlignment="Right"
+            Content="{DynamicResource ResourceKey=IdLabel}" />
         <TextBox
             Grid.Row="0"
             Grid.Column="1"
             Margin="2"
+            VerticalContentAlignment="Center"
             IsReadOnly="True"
             Text="{Binding Path=Id, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="1"
             Grid.Column="0"
             Margin="2"
-            Content="Title" />
+            HorizontalAlignment="Right"
+            Content="{DynamicResource ResourceKey=TitleLabel}" />
         <TextBox
             Grid.Row="1"
             Grid.Column="1"
             Margin="2"
+            VerticalContentAlignment="Center"
             Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="2"
             Grid.Column="0"
             Margin="2"
-            Content="Date" />
+            HorizontalAlignment="Right"
+            Content="{DynamicResource ResourceKey=DateLabel}" />
         <DatePicker
             Grid.Row="2"
             Grid.Column="1"
@@ -64,6 +77,7 @@
             Grid.Row="3"
             Grid.Column="0"
             Margin="2"
+            HorizontalAlignment="Right"
             Content="Content" />
         <TextBox
             Grid.Row="3"
@@ -76,32 +90,37 @@
             Grid.Row="4"
             Grid.Column="0"
             Margin="2"
-            Content="Published" />
+            HorizontalAlignment="Right"
+            Content="{DynamicResource ResourceKey=PublishedLabel}" />
         <CheckBox
             Grid.Row="4"
             Grid.Column="1"
             Margin="2"
+            VerticalAlignment="Center"
             IsChecked="{Binding Path=Published, Converter={StaticResource BoolToCheckBoxConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="5"
             Grid.Column="0"
             Margin="2"
+            HorizontalAlignment="Right"
             Content="Tags" />
         <TextBox
             Grid.Row="5"
             Grid.Column="1"
             Margin="2"
+            VerticalContentAlignment="Center"
             Text="{Binding Path=Tags, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <Label
             Grid.Row="6"
             Grid.Column="0"
             Margin="2"
+            HorizontalAlignment="Right"
             Content="Thumbnail" />
         <ComboBox
             Grid.Row="6"
             Grid.Column="1"
             Margin="2"
-            DisplayMemberPath="Code"
+            ItemTemplate="{StaticResource ResourceKey=PreviewTemplate}"
             ItemsSource="{Binding Path=Thumbnails, Mode=OneWay}"
             SelectedValue="{Binding Path=ThumbnailId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Id" />
@@ -109,6 +128,7 @@
             Grid.Row="7"
             Grid.Column="0"
             Margin="2"
+            HorizontalAlignment="Right"
             Content="Media" />
         <TextBox
             Grid.Row="7"

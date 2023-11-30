@@ -22,38 +22,38 @@ public partial class UpdateArticleView : Window
     private const int WS_MAXIMIZEBOX = 0x10000;
     private const int WS_MINIMIZEBOX = 0x20000;
 
-    public UpdateArticleViewModel ViewModel => (UpdateArticleViewModel)DataContext;
+    public UpdateArticleViewModel ViewModel => (UpdateArticleViewModel)this.DataContext;
 
     public UpdateArticleView()
     {
         this.InitializeComponent();
 
-        SourceInitialized += (sender, e) =>
+        this.SourceInitialized += (sender, e) =>
         {
             if (sender is Window window)
             {
                 IntPtr handle = new WindowInteropHelper(window).Handle;
                 int value = GetWindowLong(handle, GWL_STYLE);
-                SetWindowLong(handle, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
+                _ = SetWindowLong(handle, GWL_STYLE, value & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX);
 
                 int exStyle = GetWindowLong(handle, GWL_EXSTYLE);
-                SetWindowLong(handle, GWL_EXSTYLE, exStyle | WS_EX_DLGMODALFRAME);
+                _ = SetWindowLong(handle, GWL_EXSTYLE, exStyle | WS_EX_DLGMODALFRAME);
 
-                SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
-                SendMessage(handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
+                _ = SendMessage(handle, WM_SETICON, IntPtr.Zero, IntPtr.Zero);
+                _ = SendMessage(handle, WM_SETICON, new IntPtr(1), IntPtr.Zero);
 
-                SetWindowPos(handle, IntPtr.Zero, x: 0, y: 0, cx: 0, cy: 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+                _ = SetWindowPos(handle, IntPtr.Zero, x: 0, y: 0, cx: 0, cy: 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
             }
         };
 
-        DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();
+        this.DataContext = Ioc.Default.GetService<UpdateArticleViewModel>();
     }
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
     [DllImport("user32.dll", SetLastError = true)]
-    private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+    private static extern IntPtr SendMessage(IntPtr hWnd, uint unMsg, IntPtr wParam, IntPtr lParam);
 
     [DllImport("user32.dll", SetLastError = true)]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);

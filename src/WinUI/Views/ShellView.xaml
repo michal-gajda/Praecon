@@ -6,6 +6,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+    xmlns:sf="http://schemas.syncfusion.com/wpf"
     xmlns:vc="clr-namespace:Praecon.WinUI.ValueConverters"
     xmlns:vm="clr-namespace:Praecon.WinUI.ViewModels"
     Title="{Binding Path=WindowTitle, Mode=OneWay}"
@@ -42,55 +43,48 @@
             <ToolBar>
                 <Button Command="{Binding Path=CreateArticleCommand}" Content="Create" />
                 <Button
-                    Command="{Binding Path=UpdateArticleCommand}"
+                    Command="{Binding Path=UpdateArticleCommand, Mode=OneWay}"
                     CommandParameter="{Binding Path=SelectedItem, Mode=TwoWay}"
                     Content="Update" />
             </ToolBar>
         </ToolBarTray>
-        <DataGrid
+        <sf:SfDataGrid
             Grid.Row="2"
+            AllowDeleting="False"
+            AllowDraggingColumns="True"
+            AllowEditing="False"
+            AllowFiltering="True"
             AutoGenerateColumns="False"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False"
-            CanUserReorderColumns="True"
-            CanUserResizeColumns="True"
-            CanUserResizeRows="False"
-            CanUserSortColumns="True"
-            HeadersVisibility="Column"
+            ColumnSizer="Star"
             ItemsSource="{Binding Path=Items}"
+            NavigationMode="Cell"
             SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SelectionMode="Single"
-            SelectionUnit="FullRow">
-            <DataGrid.InputBindings>
-                <MouseBinding
-                    Command="{Binding Path=UpdateArticleCommand, Mode=OneWay}"
-                    CommandParameter="{Binding Path=SelectedItem}"
-                    MouseAction="LeftDoubleClick" />
-            </DataGrid.InputBindings>
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding Path=Id}"
-                    Header="Id"
-                    IsReadOnly="True"
-                    Visibility="Collapsed" />
-                <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding Path=Title}"
-                    Header="Title"
-                    IsReadOnly="True" />
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding Path=Date, StringFormat=\{0:yyyy-MM-dd\}}"
-                    Header="Date"
-                    IsReadOnly="True" />
-                <DataGridCheckBoxColumn
-                    Width="Auto"
-                    Binding="{Binding Path=Published, Converter={StaticResource BoolToCheckBoxConverter}, Mode=OneWay}"
-                    Header="Published"
-                    IsReadOnly="True" />
-            </DataGrid.Columns>
-        </DataGrid>
+            SelectionMode="Extended"
+            ShowGroupDropArea="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding Path=UpdateArticleCommand, Mode=OneWay}" CommandParameter="{Binding Path=SelectedItem}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <sf:SfDataGrid.Columns>
+                <sf:GridTextColumn
+                    ColumnSizer="SizeToCells"
+                    HeaderText="{DynamicResource ResourceKey=IdLabel}"
+                    MappingName="Id" />
+                <sf:GridTextColumn
+                    ColumnSizer="Star"
+                    HeaderText="{DynamicResource ResourceKey=TitleLabel}"
+                    MappingName="Title" />
+                <sf:GridDateTimeColumn
+                    ColumnSizer="Auto"
+                    HeaderText="{DynamicResource ResourceKey=DateLabel}"
+                    MappingName="Date" />
+                <sf:GridCheckBoxColumn
+                    ColumnSizer="Auto"
+                    HeaderText="{DynamicResource ResourceKey=PublishedLabel}"
+                    MappingName="Published" />
+            </sf:SfDataGrid.Columns>
+        </sf:SfDataGrid>
         <StatusBar Grid.Row="3">
             <StatusBarItem HorizontalAlignment="Left">
                 <Label Content="Ready" />

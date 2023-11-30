@@ -8,11 +8,11 @@ using Praecon.WinUI.ViewModels;
 
 public partial class ShellView : Window
 {
-    public ShellViewModel ViewModel => (ShellViewModel)DataContext;
+    public ShellViewModel ViewModel => (ShellViewModel)this.DataContext;
 
     public ShellView()
     {
         this.InitializeComponent();
-        DataContext = Ioc.Default.GetService<ShellViewModel>();
+        this.DataContext = Ioc.Default.GetService<ShellViewModel>();
     }
 }

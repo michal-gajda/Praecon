@@ -5,4 +5,8 @@
     <s:String x:Key="ResourceDictionaryName">pl-PL</s:String>
     <s:String x:Key="MenuFileLabel">_Plik</s:String>
     <s:String x:Key="MenuFileExitLabel">Wyjści_e</s:String>
+    <s:String x:Key="IdLabel">Id</s:String>
+    <s:String x:Key="TitleLabel">Tytuł</s:String>
+    <s:String x:Key="DateLabel">Data</s:String>
+    <s:String x:Key="PublishedLabel">Opublikowany</s:String>
 </ResourceDictionary>

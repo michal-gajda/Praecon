@@ -1,6 +1,8 @@
 namespace Praecon.WinUI.ViewModels;
 
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 using AutoMapper;
 
@@ -10,6 +12,7 @@ using CommunityToolkit.Mvvm.Input;
 using MvvmDialogs;
 
 using Praecon.WinUI.Models.Commands;
+using Praecon.WinUI.Models.Interfaces;
 using Praecon.WinUI.Models.Queries;
 using Praecon.WinUI.Models.ViewModels;
 
@@ -20,6 +23,7 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
     private readonly ILoggerFactory loggerFactory;
     private readonly IMapper mapper;
     private readonly ISender mediator;
+    private readonly IMediaRepository repository;
     private readonly IReadOnlyList<ThumbnailItem> thumbnails;
     private readonly TimeProvider timeProvider;
 
@@ -36,9 +40,11 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
     public IAsyncRelayCommand RefreshArticlesCommand { get; }
     public IAsyncRelayCommand<Article> UpdateArticleCommand { get; }
 
-    public ShellViewModel(IDialogService dialogService, ILoggerFactory loggerFactory, IMapper mapper, ISender mediator, TimeProvider timeProvider)
+    public ShellViewModel(IDialogService dialogService, ILoggerFactory loggerFactory, IMapper mapper, ISender mediator, IMediaRepository repository, TimeProvider timeProvider)
     {
-        (this.dialogService, this.logger, this.loggerFactory, this.mapper, this.mediator, this.timeProvider) = (dialogService, loggerFactory.CreateLogger<ShellViewModel>(), loggerFactory, mapper, mediator, timeProvider);
+        (this.dialogService, this.logger, this.loggerFactory, this.mapper, this.mediator, this.repository, this.timeProvider) = (dialogService, loggerFactory.CreateLogger<ShellViewModel>(), loggerFactory, mapper, mediator, repository, timeProvider);
+
+        var image = GetBitmapImage(this.repository.Read(Guid.Empty));
 
         this.thumbnails = new List<ThumbnailItem>
         {
@@ -47,12 +53,14 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
                 Id = Guid.Empty,
                 Code = "None",
                 Name = "Nic",
+                Preview = image,
             },
             new()
             {
                 Id = Guid.NewGuid(),
                 Code = "Random",
                 Name = "Logowy",
+                Preview = image,
             },
         };
 
@@ -157,7 +165,10 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
 
         ILogger<UpdateArticleViewModel>? updateViewLogger = this.loggerFactory.CreateLogger<UpdateArticleViewModel>();
 
-        Article item = parameter with { Thumbnails = this.thumbnails };
+        Article item = parameter with
+        {
+            Thumbnails = this.thumbnails,
+        };
 
         UpdateArticleViewModel? viewModel = new(updateViewLogger, this.mediator)
         {
@@ -173,5 +184,14 @@ public partial class ShellViewModel : ObservableObject, IModalDialogViewModel
         }
 
         await Task.CompletedTask;
+    }
+
+    private static BitmapImage GetBitmapImage(byte[] imageBytes)
+    {
+        var bitmapImage = new BitmapImage();
+        bitmapImage.BeginInit();
+        bitmapImage.StreamSource = new MemoryStream(imageBytes);
+        bitmapImage.EndInit();
+        return bitmapImage;
     }
 }

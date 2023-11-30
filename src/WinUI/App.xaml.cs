@@ -9,6 +9,7 @@ using Dapper;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 using MvvmDialogs;
 using MvvmDialogs.DialogTypeLocators;
@@ -20,6 +21,11 @@ using Praecon.WinUI.ViewModels;
 
 public partial class App : Application
 {
+    public App()
+    {
+        Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mjk1NTc4MkAzMjMzMmUzMDJlMzBNVDJqWU5udFA0emMzK3pGZ2ZRMjgzRHB4QXpiUjhSRmpvSFkrb25MRDEwPQ==");
+    }
+
     protected override void OnStartup(System.Windows.StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -46,7 +52,7 @@ public partial class App : Application
         SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
         SqlMapper.AddTypeHandler(new NullableDateOnlyTypeHandler());
 
-        SqlServerOptions? options = new SqlServerOptions
+        SqlServerOptions? options = new()
         {
             ConnectionString = configuration.GetConnectionString("DefaultConnectionString")!,
         };
@@ -57,8 +63,10 @@ public partial class App : Application
         services.AddSingleton<ShellViewModel>();
         services.AddSingleton<UpdateArticleViewModel>();
         services.AddSingleton<IArticleRepository, ArticleRepository>();
+        services.AddSingleton<IMediaRepository, MediaRepository>();
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<IDialogTypeLocator, DialogTypeLocator>();
+        services.AddSingleton<IFileProvider>(new ManifestEmbeddedFileProvider(assembly));
 
         IServiceProvider provider = services.BuildServiceProvider();
 
